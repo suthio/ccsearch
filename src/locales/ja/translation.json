@@ -1,0 +1,137 @@
+{
+  "app": {
+    "title": "CCSearch",
+    "searchYourSessions": "Claudeセッションを検索",
+    "importMode": "インポートモード",
+    "exitImportMode": "インポートモードを終了"
+  },
+  "search": {
+    "placeholder": "セッションを検索...",
+    "button": "検索",
+    "loading": "読み込み中...",
+    "searching": "検索中...",
+    "noResults": "セッションが見つかりません",
+    "error": "エラー"
+  },
+  "projects": {
+    "all": "すべてのプロジェクト",
+    "sessions": "セッション"
+  },
+  "filters": {
+    "tags": "タグでフィルタ",
+    "advanced": "詳細フィルタ",
+    "dateRange": "日付範囲",
+    "from": "開始日",
+    "to": "終了日",
+    "messageCount": "メッセージ数",
+    "min": "最小",
+    "max": "最大",
+    "apply": "適用",
+    "reset": "リセット",
+    "clearAll": "すべてクリア"
+  },
+  "sort": {
+    "recentlyUpdated": "最近更新された順",
+    "oldestUpdated": "更新が古い順",
+    "recentlyCreated": "最近作成された順",
+    "oldestCreated": "作成が古い順",
+    "mostMessages": "メッセージが多い順",
+    "fewestMessages": "メッセージが少ない順"
+  },
+  "session": {
+    "messages": "メッセージ",
+    "types": {
+      "coding": "コーディング",
+      "debug": "デバッグ",
+      "qa": "Q&A",
+      "analysis": "分析",
+      "conversation": "会話",
+      "general": "一般",
+      "mixed": "複合"
+    },
+    "hasError": "エラーあり",
+    "deleteButton": "セッションを削除",
+    "backToSearch": "検索に戻る",
+    "viewDetails": "詳細を見る",
+    "model": "モデル",
+    "noSummary": "サマリーがありません",
+    "topics": "トピック",
+    "duration": "時間",
+    "code": "コード",
+    "blocks": "ブロック"
+  },
+  "export": {
+    "selectAll": "すべて選択",
+    "selectNone": "選択解除",
+    "button": "エクスポート",
+    "import": "セッションをインポート",
+    "drop": "エクスポートファイルをここにドロップするか、クリックして選択",
+    "browse": "ファイルを選択",
+    "or": "または",
+    "success": "{{count}}件のセッションをインポートしました",
+    "error": "セッションのインポートに失敗しました"
+  },
+  "theme": {
+    "light": "ライト",
+    "dark": "ダーク"
+  },
+  "loadingSession": "セッションを読み込み中...",
+  "error": "エラー",
+  "sessionNotFound": "セッションが見つかりません",
+  "backToSearch": "検索に戻る",
+  "untitledSession": "無題のセッション",
+  "messages": "メッセージ",
+  "deleteSession": "セッションを削除",
+  "confirmDeleteSession": "このセッションを削除してもよろしいですか？この操作は取り消せません。",
+  "sessionDeletedSuccess": "セッションが正常に削除されました",
+  "sessionDeletedError": "セッションの削除に失敗しました",
+  "sessionInfo": "セッション情報",
+  "project": "プロジェクト",
+  "createdAt": "作成日時",
+  "updatedAt": "最終更新",
+  "conversationContent": "会話内容",
+  "messagesCount": "メッセージ",
+  "summaryView": "要約表示",
+  "fullView": "全文表示",
+  "messageOmitted": "メッセージが省略されています",
+  "showingImportantMessages": "重要なメッセージのみ表示中",
+  "showAllMessages": "全 {{count}} メッセージを表示",
+  "showingAllMessages": "全 {{count}} メッセージを表示中",
+  "noMessageContent": "メッセージ内容なし",
+  "linkCopiedToClipboard": "ダイレクトリンクをクリップボードにコピーしました！",
+  "copyDirectLink": "このメッセージへのダイレクトリンクをコピー",
+  "copyLink": "リンクをコピー",
+  "switchToLightMode": "ライトモードに切り替え",
+  "switchToDarkMode": "ダークモードに切り替え",
+  "user": "ユーザー",
+  "system": "システム",
+  "assistant": "アシスタント",
+  "copyCLI": "CLIをコピー",
+  "copyCLICommand": "Claude CLIの再開コマンドをコピー",
+  "cliCommandCopied": "Claude CLIコマンドをクリップボードにコピーしました！",
+  "conversationType": {
+    "coding": "コーディングに関する会話",
+    "debugging": "デバッグ・問題解決",
+    "qa": "Q&A・質疑応答",
+    "analysis": "分析・レビュー",
+    "general": "一般的な会話",
+    "mixed": "複合的な内容"
+  },
+  "sentiment": {
+    "positive": "順調",
+    "negative": "問題あり",
+    "neutral": "中立的",
+    "mixed": "複雑"
+  },
+  "summary": {
+    "mainTopics": "主なトピック",
+    "keyPhrases": "キーフレーズ",
+    "statistics": "統計情報",
+    "totalWords": "総単語数",
+    "avgWordsPerMessage": "平均単語数/メッセージ",
+    "codeBlocks": "コードブロック",
+    "questionsCount": "質問数",
+    "hasError": "エラー関連の内容を含む",
+    "importantMessages": "重要なメッセージ"
+  }
+}

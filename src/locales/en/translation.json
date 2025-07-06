@@ -1,0 +1,137 @@
+{
+  "app": {
+    "title": "CCSearch",
+    "searchYourSessions": "Search your Claude sessions",
+    "importMode": "Import Mode",
+    "exitImportMode": "Exit Import Mode"
+  },
+  "search": {
+    "placeholder": "Search sessions...",
+    "button": "Search",
+    "loading": "Loading...",
+    "searching": "Searching...",
+    "noResults": "No sessions found",
+    "error": "Error"
+  },
+  "projects": {
+    "all": "All Projects",
+    "sessions": "sessions"
+  },
+  "filters": {
+    "tags": "Filter by Tags",
+    "advanced": "Advanced Filters",
+    "dateRange": "Date Range",
+    "from": "From",
+    "to": "To",
+    "messageCount": "Message Count",
+    "min": "Min",
+    "max": "Max",
+    "apply": "Apply",
+    "reset": "Reset",
+    "clearAll": "Clear All"
+  },
+  "sort": {
+    "recentlyUpdated": "Recently Updated",
+    "oldestUpdated": "Oldest Updated",
+    "recentlyCreated": "Recently Created",
+    "oldestCreated": "Oldest Created",
+    "mostMessages": "Most Messages",
+    "fewestMessages": "Fewest Messages"
+  },
+  "session": {
+    "messages": "messages",
+    "types": {
+      "coding": "Coding",
+      "debug": "Debug",
+      "qa": "Q&A",
+      "analysis": "Analysis",
+      "conversation": "Conversation",
+      "general": "General",
+      "mixed": "Mixed"
+    },
+    "hasError": "Has error",
+    "deleteButton": "Delete Session",
+    "backToSearch": "Back to Search",
+    "viewDetails": "View Details",
+    "model": "Model",
+    "noSummary": "No summary available",
+    "topics": "Topics",
+    "duration": "Duration",
+    "code": "Code",
+    "blocks": "blocks"
+  },
+  "export": {
+    "selectAll": "Select All",
+    "selectNone": "Select None",
+    "button": "Export",
+    "import": "Import Sessions",
+    "drop": "Drop your export file here or click to browse",
+    "browse": "Browse",
+    "or": "or",
+    "success": "Successfully imported {{count}} sessions",
+    "error": "Failed to import sessions"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "loadingSession": "Loading session...",
+  "error": "Error",
+  "sessionNotFound": "Session not found",
+  "backToSearch": "Back to Search",
+  "untitledSession": "Untitled Session",
+  "messages": "messages",
+  "deleteSession": "Delete Session",
+  "confirmDeleteSession": "Are you sure you want to delete this session? This action cannot be undone.",
+  "sessionDeletedSuccess": "Session deleted successfully",
+  "sessionDeletedError": "Failed to delete session",
+  "sessionInfo": "Session Information",
+  "project": "Project",
+  "createdAt": "Created At",
+  "updatedAt": "Last Updated",
+  "conversationContent": "Conversation Content",
+  "messagesCount": "messages",
+  "summaryView": "Summary View",
+  "fullView": "Full View",
+  "messageOmitted": "message omitted",
+  "showingImportantMessages": "Showing important messages only",
+  "showAllMessages": "Show all {{count}} messages",
+  "showingAllMessages": "Showing all {{count}} messages",
+  "noMessageContent": "No message content",
+  "linkCopiedToClipboard": "Direct link copied to clipboard!",
+  "copyDirectLink": "Copy direct link to this message",
+  "copyLink": "Copy Link",
+  "switchToLightMode": "Switch to light mode",
+  "switchToDarkMode": "Switch to dark mode",
+  "user": "User",
+  "system": "System",
+  "assistant": "Assistant",
+  "copyCLI": "Copy CLI",
+  "copyCLICommand": "Copy Claude CLI resume command",
+  "cliCommandCopied": "Claude CLI command copied to clipboard!",
+  "conversationType": {
+    "coding": "Coding Conversation",
+    "debugging": "Debugging & Problem Solving",
+    "qa": "Q&A Session",
+    "analysis": "Analysis & Review",
+    "general": "General Conversation",
+    "mixed": "Mixed Content"
+  },
+  "sentiment": {
+    "positive": "Positive",
+    "negative": "Issues Present",
+    "neutral": "Neutral",
+    "mixed": "Complex"
+  },
+  "summary": {
+    "mainTopics": "Main Topics",
+    "keyPhrases": "Key Phrases",
+    "statistics": "Statistics",
+    "totalWords": "Total Words",
+    "avgWordsPerMessage": "Avg Words/Message",
+    "codeBlocks": "Code Blocks",
+    "questionsCount": "Questions",
+    "hasError": "Contains error-related content",
+    "importantMessages": "Important Messages"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "lib": ["ES2022"],
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "sourceMap": true,
+    "types": ["node"]
+  },
+  "include": ["src/cli.ts", "src/index.ts", "src/utils/**/*", "src/types/**/*"],
+  "exclude": ["node_modules", "dist", "build", "src/client/**/*", "src/components/**/*"]
+}

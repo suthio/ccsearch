@@ -1,0 +1,133 @@
+/* Dark mode styles */
+:root.dark-mode {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-tertiary: #3a3a3a;
+  --text-primary: #e0e0e0;
+  --text-secondary: #b0b0b0;
+  --border-color: #444444;
+  --link-color: #4da3ff;
+  --hover-bg: #3a3a3a;
+  --session-user-bg: #1e3a5f;
+  --session-assistant-bg: #2d2d2d;
+  --highlight-bg: #8b7b00;
+  --tag-bg: #1e3a5f;
+  --tag-color: #4da3ff;
+}
+
+.dark-mode {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.dark-mode .container {
+  background-color: var(--bg-primary);
+}
+
+.dark-mode header {
+  background-color: var(--bg-secondary);
+  border-bottom-color: var(--border-color);
+}
+
+.dark-mode .controls {
+  background-color: var(--bg-secondary);
+  border-bottom-color: var(--border-color);
+}
+
+.dark-mode input[type='text'],
+.dark-mode input[type='date'],
+.dark-mode input[type='number'],
+.dark-mode select {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+.dark-mode button {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+.dark-mode button:hover {
+  background-color: var(--hover-bg);
+}
+
+.dark-mode .session-result {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+.dark-mode .session-result:hover {
+  background-color: var(--hover-bg);
+}
+
+.dark-mode .session-title a {
+  color: var(--text-primary);
+}
+
+.dark-mode .session-meta {
+  color: var(--text-secondary);
+}
+
+.dark-mode .tag {
+  background-color: var(--tag-bg) !important;
+  color: var(--tag-color) !important;
+}
+
+.dark-mode .message-item.user {
+  background-color: var(--session-user-bg);
+}
+
+.dark-mode .message-item.assistant {
+  background-color: var(--session-assistant-bg);
+}
+
+.dark-mode mark {
+  background-color: var(--highlight-bg) !important;
+  color: var(--text-primary);
+}
+
+.dark-mode a {
+  color: var(--link-color);
+}
+
+.dark-mode .results-summary {
+  color: var(--text-secondary);
+}
+
+.dark-mode .error {
+  background-color: #5d1f1f;
+  color: #ff8b8b;
+}
+
+.dark-mode .no-results {
+  color: var(--text-secondary);
+}
+
+/* Dark mode toggle button styles */
+.dark-mode-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s;
+}
+
+.dark-mode-toggle:hover {
+  transform: scale(1.1);
+}
+
+.dark-mode .dark-mode-toggle {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}

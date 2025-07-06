@@ -1,0 +1,95 @@
+{
+  "name": "ccsearch",
+  "version": "0.0.1",
+  "description": "A powerful search and management tool for Claude AI conversation sessions",
+  "main": "dist/index.js",
+  "bin": {
+    "ccsearch": "dist/cli.js"
+  },
+  "scripts": {
+    "dev": "concurrently \"pnpm dev:server\" \"pnpm dev:client\"",
+    "dev:client": "vite",
+    "dev:server": "tsx watch src/server-simple.ts",
+    "dev:unified": "concurrently \"PORT=3212 tsx watch src/server-simple.ts\" \"vite\"",
+    "build": "tsc -p tsconfig.build.json && vite build",
+    "build:server": "tsc -p tsconfig.build.json",
+    "start": "NODE_ENV=production tsx src/server-unified.ts",
+    "preview": "vite preview",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "cli": "tsx src/cli.ts",
+    "server": "tsx src/index.ts",
+    "prepublishOnly": "pnpm run build",
+    "publish:npm": "npm publish"
+  },
+  "engines": {
+    "node": ">=21.0.0"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/suthio/ccsearch.git"
+  },
+  "keywords": [
+    "claude",
+    "ai",
+    "search",
+    "session",
+    "management",
+    "conversation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE",
+    "tsconfig.json",
+    "package.json"
+  ],
+  "bugs": {
+    "url": "https://github.com/suthio/ccsearch/issues"
+  },
+  "homepage": "https://github.com/suthio/ccsearch#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@playwright/test": "^1.53.2",
+    "@types/express": "^5.0.3",
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "autoprefixer": "^10.4.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.36.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "playwright": "^1.53.2",
+    "postcss": "^8.4.0",
+    "prettier": "^3.3.0",
+    "puppeteer": "^24.11.2",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.8.3",
+    "vite": "^5.4.0"
+  },
+  "dependencies": {
+    "@types/react-router-dom": "^5.3.3",
+    "commander": "^14.0.0",
+    "express": "^4.21.2",
+    "http-proxy-middleware": "^2.0.6",
+    "i18next": "^25.3.1",
+    "i18next-browser-languagedetector": "^8.2.0",
+    "lucide-react": "^0.344.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "react-i18next": "^15.6.0",
+    "react-router-dom": "^7.6.3",
+    "tsx": "^4.20.3"
+  }
+}
