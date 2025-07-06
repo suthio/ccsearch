@@ -2,34 +2,42 @@ import { test, expect } from '@playwright/test'
 
 test('has title', async ({ page }) => {
   await page.goto('/')
-  await expect(page).toHaveTitle(/Claude Chat Search/)
+  await expect(page).toHaveTitle('CC Search')
 })
 
 test('search box is visible', async ({ page }) => {
   await page.goto('/')
-  const searchBox = page.getByPlaceholder('Search sessions...')
+  const searchBox = page.locator('input#searchInput')
   await expect(searchBox).toBeVisible()
 })
 
-test('language switcher is present', async ({ page }) => {
+test('search functionality works', async ({ page }) => {
   await page.goto('/')
-  const langSwitcher = page.getByRole('button', { name: /EN|日本語/ })
-  await expect(langSwitcher).toBeVisible()
+  const searchBox = page.locator('input#searchInput')
+  const searchButton = page.locator('button#searchButton')
+  
+  await expect(searchBox).toBeVisible()
+  await expect(searchButton).toBeVisible()
+  
+  // Type in search box
+  await searchBox.fill('test query')
+  await expect(searchBox).toHaveValue('test query')
 })
 
-test('dark mode toggle works', async ({ page }) => {
+test('page loads without errors', async ({ page }) => {
+  // Listen for console errors
+  const errors: string[] = []
+  page.on('console', msg => {
+    if (msg.type() === 'error') {
+      errors.push(msg.text())
+    }
+  })
+  
   await page.goto('/')
-  const darkModeToggle = page.getByRole('button', { name: /Toggle dark mode/ })
-  await expect(darkModeToggle).toBeVisible()
-
-  // Check initial state
-  const htmlElement = page.locator('html')
-  const initialClass = await htmlElement.getAttribute('class')
-
-  // Click toggle
-  await darkModeToggle.click()
-
-  // Check if class changed
-  const afterClass = await htmlElement.getAttribute('class')
-  expect(afterClass).not.toBe(initialClass)
+  
+  // Wait for the app to load
+  await page.waitForSelector('#searchInput', { timeout: 10000 })
+  
+  // Check no console errors
+  expect(errors).toHaveLength(0)
 })

@@ -196,7 +196,7 @@ app.get('/api/search/full', async (req, res) => {
               }
 
               messageIndex++
-            } catch (parseError) {
+            } catch {
               // Skip invalid JSON lines
             }
           }
@@ -210,8 +210,8 @@ app.get('/api/search/full', async (req, res) => {
               highlights: highlights.slice(0, 5), // Show up to 5 highlights
             })
           }
-        } catch (error) {
-          console.error(`Error processing file ${file}:`, error)
+        } catch {
+          console.error(`Error processing file ${file}`)
         }
       }
     }
@@ -309,9 +309,9 @@ app.get('/api/search', async (req, res) => {
               }
 
               messageIndex++
-            } catch (parseError) {
+            } catch {
               // Skip invalid JSON lines
-              console.error('Error parsing line:', parseError.message)
+              // Skip invalid JSON lines
             }
           }
 
@@ -323,8 +323,8 @@ app.get('/api/search', async (req, res) => {
               highlights: highlights.slice(0, 3), // Limit to first 3 highlights
             })
           }
-        } catch (error) {
-          console.error(`Error processing file ${file}:`, error)
+        } catch {
+          console.error(`Error processing file ${file}`)
         }
       }
     }
@@ -381,7 +381,7 @@ app.get('/api/session/:id', async (req, res) => {
         }
 
         return res.json(session)
-      } catch (error) {
+      } catch {
         // Continue searching in other projects
       }
     }
@@ -450,8 +450,8 @@ app.get('/api/sessions', async (req, res) => {
               sessions.push(session)
             }
           }
-        } catch (error) {
-          console.error(`Error reading session ${file}:`, error)
+        } catch {
+          console.error(`Error reading session ${file}`)
         }
       }
     }
@@ -610,8 +610,8 @@ app.post('/api/export', async (req, res) => {
             project: project.replace(/-/g, '/'),
             content: lines,
           })
-        } catch (error) {
-          console.error(`Error exporting session ${file}:`, error)
+        } catch {
+          console.error(`Error exporting session ${file}`)
         }
       }
     }

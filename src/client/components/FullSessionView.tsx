@@ -261,28 +261,6 @@ export const FullSessionView: React.FC = () => {
   // Generate session summary
   const sessionSummary = session ? SessionAnalyzer.analyzeSession(session) : null
 
-  const handleDeleteSession = async () => {
-    if (!session || !confirm(t('confirmDeleteSession'))) {
-      return
-    }
-
-    try {
-      const response = await fetch(`/api/session/${session.id}`, {
-        method: 'DELETE',
-      })
-
-      if (!response.ok) {
-        throw new Error('Failed to delete session')
-      }
-
-      alert(t('sessionDeletedSuccess'))
-      navigate('/')
-    } catch (err) {
-      console.error('Failed to delete session:', err)
-      alert(t('sessionDeletedError'))
-    }
-  }
-
   if (loading) {
     return <div style={{ padding: '20px', fontFamily: 'system-ui' }}>{t('loadingSession')}</div>
   }

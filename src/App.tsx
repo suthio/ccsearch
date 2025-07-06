@@ -42,7 +42,6 @@ function App() {
   const [selectedProject, setSelectedProject] = useState<string>('all')
   const [selectedSession, setSelectedSession] = useState<Session | null>(null)
   const [isImportMode, setIsImportMode] = useState(false)
-  const [importedData, setImportedData] = useState<any>(null)
 
   // Load data on mount
   useEffect(() => {
@@ -147,11 +146,9 @@ function App() {
       const text = await file.text()
       const data = JSON.parse(text)
 
-      setImportedData(data)
       setIsImportMode(true)
 
       // Create projects from imported data
-      const importedProjects: Project[] = []
       const projectMap = new Map()
 
       for (const session of data.sessions || []) {
@@ -178,7 +175,6 @@ function App() {
 
   const exitImportMode = () => {
     setIsImportMode(false)
-    setImportedData(null)
     loadProjects()
     loadSessions()
   }
@@ -319,7 +315,7 @@ function App() {
               <div className="space-y-4">
                 {searchResults.length === 0 && searchQuery && !isLoading && (
                   <div className="text-center py-8 text-gray-500">
-                    No results found for "{searchQuery}"
+                    No results found for &quot;{searchQuery}&quot;
                   </div>
                 )}
 

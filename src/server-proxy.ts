@@ -197,7 +197,7 @@ app.get('/api/search/full', async (req, res) => {
               }
 
               messageIndex++
-            } catch (parseError) {
+            } catch {
               // Skip invalid JSON lines
             }
           }
@@ -310,9 +310,8 @@ app.get('/api/search', async (req, res) => {
               }
 
               messageIndex++
-            } catch (parseError) {
+            } catch {
               // Skip invalid JSON lines
-              console.error('Error parsing line:', parseError.message)
             }
           }
 
@@ -378,7 +377,7 @@ app.get('/api/session/:id', async (req, res) => {
         }
 
         return res.json(session)
-      } catch (error) {
+      } catch {
         // Continue searching in other projects
       }
     }

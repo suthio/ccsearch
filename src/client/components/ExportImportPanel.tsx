@@ -35,7 +35,6 @@ export const ExportImportPanel: React.FC<ExportImportPanelProps> = ({
 
       if (!response.ok) throw new Error('Export failed')
 
-      const contentType = response.headers.get('content-type')
       const fileExtension =
         exportFormat === 'csv' ? 'csv' : exportFormat === 'markdown' ? 'md' : 'json'
       const mimeType =

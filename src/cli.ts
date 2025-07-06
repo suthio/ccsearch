@@ -4,6 +4,7 @@ import { SessionFileReader } from './utils/fileReader'
 import * as fs from 'fs'
 import * as path from 'path'
 import * as readline from 'readline'
+import { spawn } from 'child_process'
 
 const program = new Command()
 const fileReader = new SessionFileReader()
@@ -189,34 +190,31 @@ function getProjectDisplayName(project: string): string {
 if (process.argv.length === 2 || (process.argv.length === 4 && process.argv[2] === '--port')) {
   // Try to start server using different methods
   const port = program.opts().port || 3000
-  
+
   // First, try the runner script (for npm package)
   try {
-    const { spawn } = require('child_process')
-    const path = require('path')
     const runnerPath = path.join(__dirname, 'server-runner.js')
-    
-    if (require('fs').existsSync(runnerPath)) {
+
+    if (fs.existsSync(runnerPath)) {
       const child = spawn('node', [runnerPath, port], {
-        stdio: 'inherit'
+        stdio: 'inherit',
       })
-      
+
       child.on('error', (err: any) => {
         console.error('Failed to start server:', err)
         process.exit(1)
       })
-      
+
       child.on('exit', (code: number) => {
         process.exit(code || 0)
       })
     }
-  } catch (e) {
+  } catch {
     // Continue to try dynamic import
   }
-  
+
   // Fall back to dynamic import
-  // @ts-ignore - Server module may not be available in all builds
-  import('./cli-server-wrapper')
+  import('./cli-server-wrapper' as any)
     .then((module: any) => {
       module.runServer(parseInt(port)).catch((error: any) => {
         console.error('Failed to start server:', error)
@@ -224,10 +222,9 @@ if (process.argv.length === 2 || (process.argv.length === 4 && process.argv[2] =
         process.exit(1)
       })
     })
-    .catch((error: any) => {
+    .catch((_error: any) => {
       // Try original cli-server as last resort
-      // @ts-ignore
-      import('./cli-server')
+      import('./cli-server' as any)
         .then((module2: any) => {
           module2.runServer(parseInt(port)).catch((error2: any) => {
             console.error('Failed to start server:', error2)

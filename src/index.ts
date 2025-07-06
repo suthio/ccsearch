@@ -47,7 +47,7 @@ async function openBrowser(url: string) {
     }
 
     await execAsync(command)
-  } catch (error) {
+  } catch {
     console.log('Could not open browser automatically. Please open:', url)
   }
 }

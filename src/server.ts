@@ -1,6 +1,7 @@
 import express from 'express'
 import * as http from 'http'
 import * as path from 'path'
+import * as fs from 'fs/promises'
 import { exec } from 'child_process'
 import { promisify } from 'util'
 import { SessionFileReader } from './utils/fileReader'
@@ -178,7 +179,6 @@ export class Server {
         sessions[sessionIndex].tags = tags
 
         // Save back to file
-        const fs = require('fs').promises
         const sessionFilePath = sessions[sessionIndex].filepath
         await fs.writeFile(sessionFilePath, JSON.stringify(sessions[sessionIndex], null, 2))
 
@@ -210,7 +210,6 @@ export class Server {
         sessions[sessionIndex].title = title
 
         // Save back to file
-        const fs = require('fs').promises
         const sessionFilePath = sessions[sessionIndex].filepath
         await fs.writeFile(sessionFilePath, JSON.stringify(sessions[sessionIndex], null, 2))
 
@@ -237,7 +236,6 @@ export class Server {
         const sessionFilePath = sessions[sessionIndex].filepath
 
         // Delete the file
-        const fs = require('fs').promises
         await fs.unlink(sessionFilePath)
 
         res.json({ success: true, message: 'Session deleted successfully' })

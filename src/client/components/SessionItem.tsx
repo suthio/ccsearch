@@ -173,7 +173,7 @@ export const SessionItem: React.FC<SessionItemProps> = ({
     if (!project) return { short: '', full: '' }
 
     // Extract meaningful parts from the path
-    const githubMatch = project.match(/github\.com\/([^\/]+\/[^\/]+)/)
+    const githubMatch = project.match(/github\.com\/([^/]+\/[^/]+)/)
     if (githubMatch) {
       return {
         short: githubMatch[1],
@@ -197,7 +197,7 @@ export const SessionItem: React.FC<SessionItemProps> = ({
   }
 
   const getConversationTypeIcon = (type: string) => {
-    const icons: Record<string, JSX.Element> = {
+    const icons: Record<string, React.JSX.Element> = {
       coding: <Code size={14} />,
       debugging: <Bug size={14} />,
       qa: <HelpCircle size={14} />,
