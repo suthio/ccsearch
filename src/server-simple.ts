@@ -762,11 +762,32 @@ app.get('/api/sessions', async (req, res) => {
 app.get('/api/projects', async (req, res) => {
   try {
     const projectsPath = path.join(CLAUDE_STORAGE_PATH, 'projects')
-    const projects = await fs.readdir(projectsPath).catch(() => [])
+    const projectDirs = await fs.readdir(projectsPath).catch(() => [])
 
-    const projectNames = projects.filter((p) => !p.startsWith('.')).map((p) => p.replace(/-/g, '/'))
+    const projects = []
 
-    res.json(projectNames)
+    for (const projectDir of projectDirs) {
+      if (projectDir.startsWith('.')) continue
+
+      const projectPath = path.join(projectsPath, projectDir)
+      const stat = await fs.stat(projectPath).catch(() => null)
+      if (!stat || !stat.isDirectory()) continue
+
+      const files = await fs.readdir(projectPath).catch(() => [])
+      const sessionFiles = files.filter((f) => f.endsWith('.jsonl'))
+
+      const displayPath = projectDir.replace(/-/g, '/')
+      const name = displayPath.split('/').pop() || displayPath
+
+      projects.push({
+        name: name,
+        path: displayPath,
+        displayPath: displayPath,
+        sessionCount: sessionFiles.length,
+      })
+    }
+
+    res.json(projects)
   } catch (error) {
     console.error('Error fetching projects:', error)
     res.status(500).json({ error: 'Failed to fetch projects' })
