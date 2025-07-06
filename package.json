@@ -1,8 +1,8 @@
 {
   "name": "ccsearch",
-  "version": "0.0.1",
+  "version": "0.0.8",
   "description": "A powerful search and management tool for Claude AI conversation sessions",
-  "main": "dist/index.js",
+  "main": "dist/index-npm.js",
   "bin": {
     "ccsearch": "dist/cli.js"
   },
@@ -12,6 +12,7 @@
     "dev:server": "tsx watch src/server-simple.ts",
     "dev:unified": "concurrently \"PORT=3212 tsx watch src/server-simple.ts\" \"vite\"",
     "build": "tsc -p tsconfig.build.json && vite build",
+    "build:npm": "vite build && mv src/server.ts src/server.ts.bak && mv src/routes/search.ts src/routes/search.ts.bak && mv src/index.ts src/index.ts.bak && mv src/cli-server.ts src/cli-server.ts.bak && tsc -p tsconfig.build.json; mv src/server.ts.bak src/server.ts && mv src/routes/search.ts.bak src/routes/search.ts && mv src/index.ts.bak src/index.ts && mv src/cli-server.ts.bak src/cli-server.ts",
     "build:server": "tsc -p tsconfig.build.json",
     "start": "NODE_ENV=production tsx src/server-unified.ts",
     "preview": "vite preview",
@@ -21,7 +22,7 @@
     "typecheck": "tsc --noEmit",
     "cli": "tsx src/cli.ts",
     "server": "tsx src/index.ts",
-    "prepublishOnly": "pnpm run build",
+    "prepublishOnly": "pnpm run build:npm && cp dist/server-runner.js dist/server-runner.js.bak || true",
     "publish:npm": "npm publish"
   },
   "engines": {

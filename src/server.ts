@@ -23,8 +23,9 @@ export class Server {
   private setupMiddleware(): void {
     this.app.use(express.json({ limit: '200mb' }))
     this.app.use(express.urlencoded({ limit: '200mb', extended: true }))
-    // Serve static files from dist/public when running with tsx
-    const publicPath = path.join(__dirname, '..', 'dist', 'public')
+    // Serve static files from dist directory
+    // When compiled, __dirname is the dist directory itself
+    const publicPath = __dirname
     this.app.use(express.static(publicPath))
   }
 
@@ -412,7 +413,7 @@ export class Server {
 
     // Serve the main app for all non-API routes (client-side routing)
     this.app.get('*', (req, res) => {
-      const indexPath = path.join(__dirname, '..', 'dist', 'public', 'index.html')
+      const indexPath = path.join(__dirname, 'index.html')
       res.sendFile(indexPath)
     })
   }

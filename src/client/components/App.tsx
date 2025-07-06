@@ -39,10 +39,10 @@ const SearchView: React.FC = () => {
 
   const loadProjects = async () => {
     try {
-      const response = await fetch('/api/projects/detailed')
+      const response = await fetch('/api/projects')
       if (!response.ok) throw new Error(t('search.error'))
       const data = await response.json()
-      setProjects(data.projects || [])
+      setProjects(data || [])
     } catch (err) {
       console.error('Error loading projects:', err)
     }

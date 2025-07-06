@@ -16,6 +16,23 @@
     "sourceMap": true,
     "types": ["node"]
   },
-  "include": ["src/cli.ts", "src/index.ts", "src/utils/**/*", "src/types/**/*"],
-  "exclude": ["node_modules", "dist", "build", "src/client/**/*", "src/components/**/*"]
+  "include": [
+    "src/cli.ts",
+    "src/cli-server-wrapper.ts",
+    "src/index-npm.ts",
+    "src/utils/**/*",
+    "src/types/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    "src/client/**/*",
+    "src/components/**/*",
+    "src/server.ts",
+    "src/routes/**/*",
+    "src/server-*.ts",
+    "src/cli-server.ts",
+    "src/index.ts"
+  ]
 }
