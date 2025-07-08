@@ -31,6 +31,9 @@ jobs:
       - name: Run ESLint
         run: pnpm lint
 
+      - name: Check Prettier formatting
+        run: pnpm format:check
+
       - name: Run TypeScript type checking
         run: pnpm typecheck
 
