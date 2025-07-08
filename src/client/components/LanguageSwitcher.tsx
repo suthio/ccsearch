@@ -12,6 +12,7 @@ export const LanguageSwitcher: React.FC = () => {
     }
 
     const handleLanguageChange = (lng: string) => {
+      // eslint-disable-next-line no-console
       console.log('Language changed event:', lng)
       setCurrentLang(lng)
     }
@@ -26,16 +27,21 @@ export const LanguageSwitcher: React.FC = () => {
 
   const changeLanguage = (lng: string) => {
     if (!i18n) {
+       
       console.error('i18n not initialized')
       return
     }
+    // eslint-disable-next-line no-console
     console.log('Changing language to:', lng)
+    // eslint-disable-next-line no-console
     console.log('Current language:', i18n.language)
     i18n.changeLanguage(lng).then(() => {
+      // eslint-disable-next-line no-console
       console.log('Language changed to:', i18n.language)
     })
   }
 
+  // eslint-disable-next-line no-console
   console.log('Rendering LanguageSwitcher, current language:', currentLang)
 
   if (!i18n) {

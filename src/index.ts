@@ -10,16 +10,20 @@ export async function startServer(port: number = 3000) {
 
   try {
     const actualPort = await server.start(port)
+    // eslint-disable-next-line no-console
     console.log(`\nCCSearch is running at http://localhost:${actualPort}`)
+    // eslint-disable-next-line no-console
     console.log('Press Ctrl+C to stop\n')
 
     await openBrowser(`http://localhost:${actualPort}`)
   } catch (error) {
+     
     console.error('Failed to start server:', error)
     process.exit(1)
   }
 
   process.on('SIGINT', () => {
+    // eslint-disable-next-line no-console
     console.log('\nShutting down...')
     server.stop()
     process.exit(0)
@@ -47,7 +51,8 @@ async function openBrowser(url: string) {
     }
 
     await execAsync(command)
-  } catch (error) {
+  } catch {
+    // eslint-disable-next-line no-console
     console.log('Could not open browser automatically. Please open:', url)
   }
 }

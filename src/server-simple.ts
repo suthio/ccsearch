@@ -48,6 +48,7 @@ interface Session {
   title: string
   created_at: string
   updated_at: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   messages: any[]
 }
 
@@ -100,6 +101,7 @@ app.get('/api/projects/detailed', async (req, res) => {
 
     res.json({ projects })
   } catch (error) {
+     
     console.error('Error fetching projects:', error)
     res.status(500).json({ error: 'Failed to fetch projects' })
   }
@@ -116,8 +118,10 @@ app.get('/api/search/full', async (req, res) => {
     }
 
     const projectsPath = path.join(CLAUDE_STORAGE_PATH, 'projects')
+    // eslint-disable-next-line no-console
     console.log('Full text search in:', projectsPath)
     const projects = await fs.readdir(projectsPath).catch((err) => {
+       
       console.error('Error reading projects directory:', err)
       return []
     })
@@ -249,7 +253,7 @@ app.get('/api/search/full', async (req, res) => {
               }
 
               messageIndex++
-            } catch (parseError) {
+            } catch {
               // Skip invalid JSON lines
             }
           }
@@ -264,16 +268,19 @@ app.get('/api/search/full', async (req, res) => {
             })
           }
         } catch (error) {
+           
           console.error(`Error processing file ${file}:`, error)
         }
       }
     }
 
+    // eslint-disable-next-line no-console
     console.log(
       `Full text search: searched ${totalFilesSearched} files, found ${results.length} results for query: "${query}"`,
     )
     res.json({ results })
   } catch (error) {
+     
     console.error('Search error:', error)
     res.status(500).json({ error: 'Failed to search conversations' })
   }
@@ -289,11 +296,14 @@ app.get('/api/search', async (req, res) => {
 
     // Get all project directories
     const projectsPath = path.join(CLAUDE_STORAGE_PATH, 'projects')
+    // eslint-disable-next-line no-console
     console.log('Searching in:', projectsPath)
     const projects = await fs.readdir(projectsPath).catch((err) => {
+       
       console.error('Error reading projects directory:', err)
       return []
     })
+    // eslint-disable-next-line no-console
     console.log('Found projects:', projects.length)
 
     const results: SearchResult[] = []
@@ -402,7 +412,9 @@ app.get('/api/search', async (req, res) => {
               messageIndex++
             } catch (parseError) {
               // Skip invalid JSON lines
-              console.error('Error parsing line:', parseError.message)
+               
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              console.error('Error parsing line:', (parseError as any).message)
             }
           }
 
@@ -411,20 +423,24 @@ app.get('/api/search', async (req, res) => {
               sessionId: file.replace('.jsonl', ''),
               sessionDate,
               messageCount: highlights.length,
+              project: project.replace(/-/g, '/'),
               highlights: highlights.slice(0, 3), // Limit to first 3 highlights
             })
           }
         } catch (error) {
+           
           console.error(`Error processing file ${file}:`, error)
         }
       }
     }
 
+    // eslint-disable-next-line no-console
     console.log(
       `Searched ${totalFilesSearched} files, found ${results.length} results for query: "${query}"`,
     )
     res.json({ results })
   } catch (error) {
+     
     console.error('Search error:', error)
     res.status(500).json({ error: 'Failed to search conversations' })
   }
@@ -475,6 +491,7 @@ app.get('/api/session/:id', async (req, res) => {
                     break
                   default:
                     // For unknown types, we'll try to determine later
+                    // eslint-disable-next-line no-console
                     console.log(`Unknown message type: ${parsed.type}`)
                 }
               }
@@ -489,6 +506,7 @@ app.get('/api/session/:id', async (req, res) => {
                   content = parsed.message.content
                 } else if (Array.isArray(parsed.message.content)) {
                   content = parsed.message.content
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     .map((c: any) => {
                       if (typeof c === 'string') return c
                       if (c.text) return c.text
@@ -511,6 +529,7 @@ app.get('/api/session/:id', async (req, res) => {
                   content = parsed.content
                 } else if (Array.isArray(parsed.content)) {
                   content = parsed.content
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     .map((c: any) => {
                       if (typeof c === 'string') return c
                       if (c.text) return c.text
@@ -553,6 +572,7 @@ app.get('/api/session/:id', async (req, res) => {
 
                 if (!content) {
                   // Log unhandled format
+                  // eslint-disable-next-line no-console
                   console.log(
                     `Line ${lineIndex}: Unhandled message format:`,
                     JSON.stringify(parsed).substring(0, 200),
@@ -562,6 +582,7 @@ app.get('/api/session/:id', async (req, res) => {
 
               // If we still don't have a role, skip this message
               if (!role) {
+                // eslint-disable-next-line no-console
                 console.log(
                   `Line ${lineIndex}: Could not determine role for message:`,
                   JSON.stringify(parsed).substring(0, 200),
@@ -582,6 +603,7 @@ app.get('/api/session/:id', async (req, res) => {
 
               return null
             } catch (err) {
+               
               console.error(`Failed to parse line ${lineIndex}:`, line.substring(0, 100), err)
               return null
             }
@@ -591,22 +613,22 @@ app.get('/api/session/:id', async (req, res) => {
         const session = {
           id: sessionId,
           project: project.replace(/-/g, '/'),
-          created_at: messages[0]?.timestamp || messages[0]?.ts || fileBirthtime,
+          created_at: messages[0]?.timestamp || fileBirthtime,
           updated_at:
             messages[messages.length - 1]?.timestamp ||
-            messages[messages.length - 1]?.ts ||
             fileMtime,
           messages,
         }
 
         return res.json(session)
-      } catch (error) {
+      } catch {
         // Continue searching in other projects
       }
     }
 
     res.status(404).json({ error: 'Session not found' })
   } catch (error) {
+     
     console.error('Error fetching session:', error)
     res.status(500).json({ error: 'Failed to fetch session' })
   }
@@ -671,6 +693,7 @@ app.get('/api/sessions', async (req, res) => {
             }
           }
         } catch (error) {
+           
           console.error(`Error reading session ${file}:`, error)
         }
       }
@@ -717,6 +740,7 @@ app.get('/api/sessions', async (req, res) => {
           content =
             typeof msg.message.content === 'string'
               ? msg.message.content
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               : msg.message.content.map((c: any) => c.text || '').join(' ')
         }
 
@@ -753,6 +777,7 @@ app.get('/api/sessions', async (req, res) => {
 
     res.json({ total: sessionsWithMeta.length, sessions: sessionsWithMeta.slice(0, 50) })
   } catch (error) {
+     
     console.error('Error fetching sessions:', error)
     res.status(500).json({ error: 'Failed to fetch sessions' })
   }
@@ -789,6 +814,7 @@ app.get('/api/projects', async (req, res) => {
 
     res.json(projects)
   } catch (error) {
+     
     console.error('Error fetching projects:', error)
     res.status(500).json({ error: 'Failed to fetch projects' })
   }
@@ -807,6 +833,7 @@ app.post('/api/open-claude', async (req, res) => {
 
     res.json({ success: true, message: 'Opening session in Claude' })
   } catch (error) {
+     
     console.error('Error opening Claude:', error)
     res.status(500).json({
       success: false,
@@ -818,6 +845,7 @@ app.post('/api/open-claude', async (req, res) => {
 // Export sessions
 app.post('/api/export', async (req, res) => {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { sessionIds, projectFilter, format = 'json' } = req.body
     const sessions = []
 
@@ -849,7 +877,7 @@ app.post('/api/export', async (req, res) => {
 
           // Parse messages from JSONL
           const messages = lines
-            .map((line, lineIndex) => {
+            .map((line) => {
               try {
                 const parsed = JSON.parse(line)
                 let content = ''
@@ -882,7 +910,8 @@ app.post('/api/export', async (req, res) => {
                     content = parsed.message.content
                   } else if (Array.isArray(parsed.message.content)) {
                     content = parsed.message.content
-                      .map((c: any) => {
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    .map((c: any) => {
                         if (typeof c === 'string') return c
                         if (c.text) return c.text
                         if (c.content) return c.content
@@ -940,6 +969,7 @@ app.post('/api/export', async (req, res) => {
             tags: [],
           })
         } catch (error) {
+           
           console.error(`Error exporting session ${file}:`, error)
         }
       }
@@ -959,6 +989,7 @@ app.post('/api/export', async (req, res) => {
 
     res.json(exportData)
   } catch (error) {
+     
     console.error('Error exporting sessions:', error)
     res.status(500).json({ error: 'Failed to export sessions' })
   }
@@ -987,6 +1018,7 @@ app.post('/api/import', async (req, res) => {
       warnings: [],
     })
   } catch (error) {
+     
     console.error('Error importing sessions:', error)
     res.status(500).json({ error: 'Failed to import sessions' })
   }
@@ -998,19 +1030,23 @@ app.get('*', serveIndex)
 // Start server
 const port = process.env.PORT || 3212
 const server = app.listen(port, () => {
+  // eslint-disable-next-line no-console
   console.log(`API server running on http://localhost:${port}`)
 })
 
 // Graceful shutdown handlers
 const shutdown = () => {
+  // eslint-disable-next-line no-console
   console.log('Shutting down server...')
   server.close(() => {
+    // eslint-disable-next-line no-console
     console.log('Server closed')
     process.exit(0)
   })
 
   // Force exit after 5 seconds
   setTimeout(() => {
+     
     console.error('Forced shutdown after timeout')
     process.exit(1)
   }, 5000)

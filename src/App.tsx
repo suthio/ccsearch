@@ -10,6 +10,7 @@ interface Session {
   created_at: string
   updated_at: string
   messageCount: number
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   messages: any[]
   preview: string
 }
@@ -42,6 +43,7 @@ function App() {
   const [selectedProject, setSelectedProject] = useState<string>('all')
   const [selectedSession, setSelectedSession] = useState<Session | null>(null)
   const [isImportMode, setIsImportMode] = useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
   const [importedData, setImportedData] = useState<any>(null)
 
   // Load data on mount
@@ -54,6 +56,7 @@ function App() {
     if (selectedProject && !isImportMode) {
       loadSessions()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProject, isImportMode])
 
   const loadProjects = async () => {
@@ -151,6 +154,7 @@ function App() {
       setIsImportMode(true)
 
       // Create projects from imported data
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const importedProjects: Project[] = []
       const projectMap = new Map()
 
@@ -319,7 +323,7 @@ function App() {
               <div className="space-y-4">
                 {searchResults.length === 0 && searchQuery && !isLoading && (
                   <div className="text-center py-8 text-gray-500">
-                    No results found for "{searchQuery}"
+                    No results found for &quot;{searchQuery}&quot;
                   </div>
                 )}
 

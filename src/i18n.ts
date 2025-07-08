@@ -4,6 +4,7 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 import enTranslation from './locales/en/translation.json'
 import jaTranslation from './locales/ja/translation.json'
 
+// eslint-disable-next-line no-console
 console.log('Loading i18n...')
 
 const resources = {
@@ -15,8 +16,10 @@ const resources = {
   },
 }
 
+// eslint-disable-next-line no-console
 console.log('i18n resources loaded from JSON files')
 
+// eslint-disable-next-line no-console
 console.log('Initializing i18n with initReactI18next...')
 
 const initI18n = async () => {
@@ -41,12 +44,16 @@ const initI18n = async () => {
       },
     })
 
+  // eslint-disable-next-line no-console
   console.log('i18n initialized')
+  // eslint-disable-next-line no-console
   console.log('Current language:', i18n.language)
+  // eslint-disable-next-line no-console
   console.log('Available languages:', Object.keys(resources))
 }
 
 // Initialize immediately
+ 
 initI18n().catch(console.error)
 
 export default i18n

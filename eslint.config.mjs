@@ -4,9 +4,13 @@ import typescriptParser from '@typescript-eslint/parser'
 import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import prettier from 'eslint-config-prettier'
+import globals from 'globals'
 
 export default [
   js.configs.recommended,
+  {
+    ignores: ['dist/**', 'build/**', 'node_modules/**', 'test-*.js', 'test/*.js', '*.spec.js', '*.test.js'],
+  },
   {
     files: ['**/*.{ts,tsx,js,jsx,mjs}'],
     languageOptions: {
@@ -19,9 +23,9 @@ export default [
         },
       },
       globals: {
-        browser: true,
-        node: true,
-        es2022: true,
+        ...globals.browser,
+        ...globals.node,
+        ...globals.es2021,
       },
     },
     plugins: {

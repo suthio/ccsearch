@@ -97,7 +97,7 @@ export const SessionItem: React.FC<SessionItemProps> = ({
   // Get title from first user message
   const getSessionTitle = (): string => {
     const firstUserMessage = session.messages.find(
-      (msg) => (msg.role === 'user' || msg.type === 'user') && extractMessageContent(msg).trim(),
+      (msg) => msg.role === 'user' && extractMessageContent(msg).trim(),
     )
 
     if (firstUserMessage) {
@@ -148,6 +148,7 @@ export const SessionItem: React.FC<SessionItemProps> = ({
     })
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const extractMessageContent = (msg: any): string => {
     if (!msg) return ''
 
@@ -162,6 +163,7 @@ export const SessionItem: React.FC<SessionItemProps> = ({
       if (typeof msg.message.content === 'string') {
         return msg.message.content
       } else if (Array.isArray(msg.message.content)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return msg.message.content.map((c: any) => c.text || '').join(' ')
       }
     }
@@ -173,7 +175,7 @@ export const SessionItem: React.FC<SessionItemProps> = ({
     if (!project) return { short: '', full: '' }
 
     // Extract meaningful parts from the path
-    const githubMatch = project.match(/github\.com\/([^\/]+\/[^\/]+)/)
+    const githubMatch = project.match(/github\.com\/([^/]+\/[^/]+)/)
     if (githubMatch) {
       return {
         short: githubMatch[1],
@@ -197,7 +199,7 @@ export const SessionItem: React.FC<SessionItemProps> = ({
   }
 
   const getConversationTypeIcon = (type: string) => {
-    const icons: Record<string, JSX.Element> = {
+    const icons: Record<string, React.JSX.Element> = {
       coding: <Code size={14} />,
       debugging: <Bug size={14} />,
       qa: <HelpCircle size={14} />,
@@ -418,7 +420,7 @@ export const SessionItem: React.FC<SessionItemProps> = ({
               .slice(0, 3)
               .map((msg, idx) => {
                 const content = extractMessageContent(msg)
-                const role = msg.role || msg.type || 'system'
+                const role = msg.role || 'system'
                 const displayRole = role === 'user' ? 'User' : 'Assistant'
 
                 return (

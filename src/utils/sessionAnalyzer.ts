@@ -82,6 +82,7 @@ export class SessionAnalyzer {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private static extractContent(msg: any): string {
     if (!msg) return ''
 
@@ -96,6 +97,7 @@ export class SessionAnalyzer {
       if (typeof msg.message.content === 'string') {
         return msg.message.content
       } else if (Array.isArray(msg.message.content)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return msg.message.content.map((c: any) => c.text || '').join(' ')
       }
     }
