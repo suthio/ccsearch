@@ -45,7 +45,6 @@ const SearchView: React.FC = () => {
       const data = await response.json()
       setProjects(data || [])
     } catch (err) {
-       
       console.error('Error loading projects:', err)
     }
   }
@@ -439,7 +438,6 @@ const SearchView: React.FC = () => {
             displaySessions
               .map((result, index) => {
                 if (!result || !result.session) {
-                   
                   console.error('Invalid result:', result)
                   return null
                 }

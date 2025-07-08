@@ -101,7 +101,6 @@ app.get('/api/projects/detailed', async (req, res) => {
 
     res.json({ projects })
   } catch (error) {
-     
     console.error('Error fetching projects:', error)
     res.status(500).json({ error: 'Failed to fetch projects' })
   }
@@ -121,7 +120,6 @@ app.get('/api/search/full', async (req, res) => {
     // eslint-disable-next-line no-console
     console.log('Full text search in:', projectsPath)
     const projects = await fs.readdir(projectsPath).catch((err) => {
-       
       console.error('Error reading projects directory:', err)
       return []
     })
@@ -268,7 +266,6 @@ app.get('/api/search/full', async (req, res) => {
             })
           }
         } catch (error) {
-           
           console.error(`Error processing file ${file}:`, error)
         }
       }
@@ -280,7 +277,6 @@ app.get('/api/search/full', async (req, res) => {
     )
     res.json({ results })
   } catch (error) {
-     
     console.error('Search error:', error)
     res.status(500).json({ error: 'Failed to search conversations' })
   }
@@ -299,7 +295,6 @@ app.get('/api/search', async (req, res) => {
     // eslint-disable-next-line no-console
     console.log('Searching in:', projectsPath)
     const projects = await fs.readdir(projectsPath).catch((err) => {
-       
       console.error('Error reading projects directory:', err)
       return []
     })
@@ -412,7 +407,7 @@ app.get('/api/search', async (req, res) => {
               messageIndex++
             } catch (parseError) {
               // Skip invalid JSON lines
-               
+
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               console.error('Error parsing line:', (parseError as any).message)
             }
@@ -428,7 +423,6 @@ app.get('/api/search', async (req, res) => {
             })
           }
         } catch (error) {
-           
           console.error(`Error processing file ${file}:`, error)
         }
       }
@@ -440,7 +434,6 @@ app.get('/api/search', async (req, res) => {
     )
     res.json({ results })
   } catch (error) {
-     
     console.error('Search error:', error)
     res.status(500).json({ error: 'Failed to search conversations' })
   }
@@ -603,7 +596,6 @@ app.get('/api/session/:id', async (req, res) => {
 
               return null
             } catch (err) {
-               
               console.error(`Failed to parse line ${lineIndex}:`, line.substring(0, 100), err)
               return null
             }
@@ -614,9 +606,7 @@ app.get('/api/session/:id', async (req, res) => {
           id: sessionId,
           project: project.replace(/-/g, '/'),
           created_at: messages[0]?.timestamp || fileBirthtime,
-          updated_at:
-            messages[messages.length - 1]?.timestamp ||
-            fileMtime,
+          updated_at: messages[messages.length - 1]?.timestamp || fileMtime,
           messages,
         }
 
@@ -628,7 +618,6 @@ app.get('/api/session/:id', async (req, res) => {
 
     res.status(404).json({ error: 'Session not found' })
   } catch (error) {
-     
     console.error('Error fetching session:', error)
     res.status(500).json({ error: 'Failed to fetch session' })
   }
@@ -693,7 +682,6 @@ app.get('/api/sessions', async (req, res) => {
             }
           }
         } catch (error) {
-           
           console.error(`Error reading session ${file}:`, error)
         }
       }
@@ -740,8 +728,8 @@ app.get('/api/sessions', async (req, res) => {
           content =
             typeof msg.message.content === 'string'
               ? msg.message.content
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              : msg.message.content.map((c: any) => c.text || '').join(' ')
+              : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                msg.message.content.map((c: any) => c.text || '').join(' ')
         }
 
         content = content.replace(/\n+/g, ' ').replace(/\s+/g, ' ').trim()
@@ -777,7 +765,6 @@ app.get('/api/sessions', async (req, res) => {
 
     res.json({ total: sessionsWithMeta.length, sessions: sessionsWithMeta.slice(0, 50) })
   } catch (error) {
-     
     console.error('Error fetching sessions:', error)
     res.status(500).json({ error: 'Failed to fetch sessions' })
   }
@@ -814,7 +801,6 @@ app.get('/api/projects', async (req, res) => {
 
     res.json(projects)
   } catch (error) {
-     
     console.error('Error fetching projects:', error)
     res.status(500).json({ error: 'Failed to fetch projects' })
   }
@@ -833,7 +819,6 @@ app.post('/api/open-claude', async (req, res) => {
 
     res.json({ success: true, message: 'Opening session in Claude' })
   } catch (error) {
-     
     console.error('Error opening Claude:', error)
     res.status(500).json({
       success: false,
@@ -911,7 +896,7 @@ app.post('/api/export', async (req, res) => {
                   } else if (Array.isArray(parsed.message.content)) {
                     content = parsed.message.content
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    .map((c: any) => {
+                      .map((c: any) => {
                         if (typeof c === 'string') return c
                         if (c.text) return c.text
                         if (c.content) return c.content
@@ -969,7 +954,6 @@ app.post('/api/export', async (req, res) => {
             tags: [],
           })
         } catch (error) {
-           
           console.error(`Error exporting session ${file}:`, error)
         }
       }
@@ -989,7 +973,6 @@ app.post('/api/export', async (req, res) => {
 
     res.json(exportData)
   } catch (error) {
-     
     console.error('Error exporting sessions:', error)
     res.status(500).json({ error: 'Failed to export sessions' })
   }
@@ -1018,7 +1001,6 @@ app.post('/api/import', async (req, res) => {
       warnings: [],
     })
   } catch (error) {
-     
     console.error('Error importing sessions:', error)
     res.status(500).json({ error: 'Failed to import sessions' })
   }
@@ -1046,7 +1028,6 @@ const shutdown = () => {
 
   // Force exit after 5 seconds
   setTimeout(() => {
-     
     console.error('Forced shutdown after timeout')
     process.exit(1)
   }, 5000)

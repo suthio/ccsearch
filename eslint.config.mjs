@@ -9,7 +9,15 @@ import globals from 'globals'
 export default [
   js.configs.recommended,
   {
-    ignores: ['dist/**', 'build/**', 'node_modules/**', 'test-*.js', 'test/*.js', '*.spec.js', '*.test.js'],
+    ignores: [
+      'dist/**',
+      'build/**',
+      'node_modules/**',
+      'test-*.js',
+      'test/*.js',
+      '*.spec.js',
+      '*.test.js',
+    ],
   },
   {
     files: ['**/*.{ts,tsx,js,jsx,mjs}'],

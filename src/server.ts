@@ -37,7 +37,6 @@ export class Server {
         const projects = await this.fileReader.getProjects()
         res.json(projects)
       } catch (error) {
-         
         console.error('Error fetching projects:', error)
         res.status(500).json({ error: 'Failed to fetch projects' })
       }
@@ -103,8 +102,8 @@ export class Server {
                 content =
                   typeof msgContent === 'string'
                     ? msgContent
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    : msgContent.map((c: any) => c.text || '').join(' ')
+                    : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      msgContent.map((c: any) => c.text || '').join(' ')
               }
             }
 
@@ -144,7 +143,6 @@ export class Server {
           sessions: sessionsWithSummary,
         })
       } catch (error) {
-         
         console.error('Error fetching sessions:', error)
         res.status(500).json({ error: 'Failed to fetch sessions' })
       }
@@ -160,7 +158,6 @@ export class Server {
           res.status(404).json({ error: 'Session not found' })
         }
       } catch (error) {
-         
         console.error('Error fetching session:', error)
         res.status(500).json({ error: 'Failed to fetch session' })
       }
@@ -194,7 +191,6 @@ export class Server {
 
         res.json({ success: true, tags })
       } catch (error) {
-         
         console.error('Error updating tags:', error)
         res.status(500).json({ error: 'Failed to update tags' })
       }
@@ -228,7 +224,6 @@ export class Server {
 
         res.json({ success: true, title })
       } catch (error) {
-         
         console.error('Error updating title:', error)
         res.status(500).json({ error: 'Failed to update title' })
       }
@@ -256,7 +251,6 @@ export class Server {
 
         res.json({ success: true, message: 'Session deleted successfully' })
       } catch (error) {
-         
         console.error('Error deleting session:', error)
         res.status(500).json({ error: 'Failed to delete session' })
       }
@@ -274,7 +268,6 @@ export class Server {
 
         res.json({ success: true, message: 'Opening session in Claude' })
       } catch (error) {
-         
         console.error('Error opening Claude:', error)
         res.status(500).json({
           success: false,
@@ -342,7 +335,6 @@ export class Server {
           res.json(exportData)
         }
       } catch (error) {
-         
         console.error('Error exporting sessions:', error)
         res.status(500).json({ error: 'Failed to export sessions' })
       }
@@ -413,7 +405,6 @@ export class Server {
           },
         })
       } catch (error) {
-         
         console.error('Error importing sessions:', error)
         if (error instanceof SyntaxError) {
           res.status(400).json({
@@ -542,8 +533,8 @@ export class Server {
       }
       markdown += '\n### Messages\n\n'
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        session.messages.forEach((msg: any, index: number) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      session.messages.forEach((msg: any, index: number) => {
         // Extract content from various message formats
         let content = ''
         let role = 'System'

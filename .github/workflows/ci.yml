@@ -3,13 +3,13 @@ name: CI
 on:
   push:
     branches:
-      - '**'  # Run on all branches
+      - '**' # Run on all branches
 
 jobs:
   lint-typecheck-build:
     name: Lint, Type Check and Build
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

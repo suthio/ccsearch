@@ -27,7 +27,6 @@ export const LanguageSwitcher: React.FC = () => {
 
   const changeLanguage = (lng: string) => {
     if (!i18n) {
-       
       console.error('i18n not initialized')
       return
     }

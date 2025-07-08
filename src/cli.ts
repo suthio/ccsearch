@@ -106,7 +106,6 @@ program
         console.log(`  ${idx + 1}. ${title}${project}`)
       })
     } catch (error) {
-       
       console.error('Error exporting sessions:', error)
       process.exit(1)
     }
@@ -149,7 +148,6 @@ program
         console.log(`   ID: ${session.id}`)
       })
     } catch (error) {
-       
       console.error('Error searching sessions:', error)
       process.exit(1)
     }
@@ -206,7 +204,7 @@ function getProjectDisplayName(project: string): string {
 if (process.argv.length === 2 || (process.argv.length === 4 && process.argv[2] === '--port')) {
   // Try to start server using different methods
   const port = program.opts().port || 3000
-  
+
   // First, try the runner script (for npm package)
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -214,20 +212,19 @@ if (process.argv.length === 2 || (process.argv.length === 4 && process.argv[2] =
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const path = require('path')
     const runnerPath = path.join(__dirname, 'server-runner.js')
-    
+
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     if (require('fs').existsSync(runnerPath)) {
       const child = spawn('node', [runnerPath, port], {
-        stdio: 'inherit'
+        stdio: 'inherit',
       })
-      
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       child.on('error', (err: any) => {
-         
         console.error('Failed to start server:', err)
         process.exit(1)
       })
-      
+
       child.on('exit', (code: number) => {
         process.exit(code || 0)
       })
@@ -235,16 +232,15 @@ if (process.argv.length === 2 || (process.argv.length === 4 && process.argv[2] =
   } catch {
     // Continue to try dynamic import
   }
-  
+
   // Fall back to dynamic import
   import('./cli-server-wrapper')
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .then((module: any) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       module.runServer(parseInt(port)).catch((error: any) => {
-         
         console.error('Failed to start server:', error)
-         
+
         console.error('Server functionality may not be available in this build.')
         process.exit(1)
       })
@@ -252,22 +248,20 @@ if (process.argv.length === 2 || (process.argv.length === 4 && process.argv[2] =
     .catch(() => {
       // Try original cli-server as last resort
       import('./cli-server')
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .then((module2: any) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           module2.runServer(parseInt(port)).catch((error2: any) => {
-             
             console.error('Failed to start server:', error2)
-             
-        console.error('Server functionality may not be available in this build.')
+
+            console.error('Server functionality may not be available in this build.')
             process.exit(1)
           })
         })
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .catch((error2: any) => {
-           
           console.error('Server module not available:', error2)
-           
+
           console.error('Please use the export or search commands.')
           process.exit(1)
         })

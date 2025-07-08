@@ -17,7 +17,6 @@ export async function startServer(port: number = 3000) {
 
     await openBrowser(`http://localhost:${actualPort}`)
   } catch (error) {
-     
     console.error('Failed to start server:', error)
     process.exit(1)
   }

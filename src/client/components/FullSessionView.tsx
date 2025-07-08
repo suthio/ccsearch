@@ -190,7 +190,7 @@ export const FullSessionView: React.FC = () => {
 
         if (!response.ok) {
           const errorText = await response.text()
-           
+
           console.error('API error response:', errorText)
           throw new Error(`Failed to fetch session: ${response.status} ${response.statusText}`)
         }
@@ -217,7 +217,6 @@ export const FullSessionView: React.FC = () => {
 
         setSession(data)
       } catch (err) {
-         
         console.error('Error fetching session:', err)
         setError(err instanceof Error ? err.message : 'An error occurred')
       } finally {
@@ -288,7 +287,6 @@ export const FullSessionView: React.FC = () => {
       alert(t('sessionDeletedSuccess'))
       navigate('/')
     } catch (err) {
-       
       console.error('Failed to delete session:', err)
       alert(t('sessionDeletedError'))
     }
@@ -459,7 +457,6 @@ export const FullSessionView: React.FC = () => {
                         throw new Error('Failed to save tags')
                       }
                     } catch (err) {
-                       
                       console.error('Failed to save tags:', err)
                     }
                   }}

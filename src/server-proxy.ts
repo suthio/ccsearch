@@ -496,8 +496,8 @@ app.get('/api/sessions', async (req, res) => {
           content =
             typeof msg.message.content === 'string'
               ? msg.message.content
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              : msg.message.content.map((c: any) => c.text || '').join(' ')
+              : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                msg.message.content.map((c: any) => c.text || '').join(' ')
         }
 
         content = content.replace(/\n+/g, ' ').replace(/\s+/g, ' ').trim()

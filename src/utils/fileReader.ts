@@ -84,7 +84,6 @@ export class SessionFileReader {
           })
         }
       } catch (error) {
-         
         console.error(`Error reading project directory ${projectDir}:`, error)
       }
     }
@@ -153,12 +152,10 @@ export class SessionFileReader {
               sessions.push(session)
             }
           } catch (error) {
-             
             console.error(`Error reading session file ${file}:`, error)
           }
         }
       } catch (error) {
-         
         console.error(`Error reading project directory ${projectDir}:`, error)
       }
     }
@@ -243,7 +240,6 @@ export class SessionFileReader {
           }
         }
       } catch (error) {
-         
         console.error('Error parsing line:', error)
       }
     }
