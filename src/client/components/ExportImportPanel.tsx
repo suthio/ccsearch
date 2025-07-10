@@ -3,6 +3,7 @@ import React, { useState, useRef } from 'react'
 interface ExportImportPanelProps {
   selectedProject: string
   selectedSessions: Set<string>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onImportComplete: (importedData: any[]) => void
   isImportMode?: boolean
 }
@@ -35,6 +36,7 @@ export const ExportImportPanel: React.FC<ExportImportPanelProps> = ({
 
       if (!response.ok) throw new Error('Export failed')
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const contentType = response.headers.get('content-type')
       const fileExtension =
         exportFormat === 'csv' ? 'csv' : exportFormat === 'markdown' ? 'md' : 'json'

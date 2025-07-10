@@ -35,6 +35,7 @@ const SearchView: React.FC = () => {
   useEffect(() => {
     loadProjects()
     loadSessions()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProject])
 
   const loadProjects = async () => {
@@ -120,6 +121,7 @@ const SearchView: React.FC = () => {
         query,
         total: data.results.length,
         results: await Promise.all(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           data.results.map(async (result: any) => {
             // Fetch full session data
             const sessionResponse = await fetch(`/api/session/${result.sessionId}`)
@@ -127,6 +129,7 @@ const SearchView: React.FC = () => {
 
             return {
               session,
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               matches: result.highlights.map((h: any) => ({
                 messageIndex: h.messageIndex,
                 message: session.messages[h.messageIndex] || { role: 'user', content: '' },

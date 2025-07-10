@@ -165,12 +165,14 @@ export const FullSessionView: React.FC = () => {
 
   useEffect(() => {
     const fetchSession = async () => {
+      // eslint-disable-next-line no-console
       console.log('Fetching session with ID:', id)
       try {
         // Check if we're in import mode and have the session
         if (isImportMode && importedSessions.length > 0) {
           const importedSession = importedSessions.find((s) => s.id === id)
           if (importedSession) {
+            // eslint-disable-next-line no-console
             console.log('Found imported session:', importedSession)
             setSession(importedSession)
             setLoading(false)
@@ -180,23 +182,28 @@ export const FullSessionView: React.FC = () => {
 
         // Otherwise fetch from API
         const url = `/api/session/${id}`
+        // eslint-disable-next-line no-console
         console.log('Fetching from API:', url)
         const response = await fetch(url)
+        // eslint-disable-next-line no-console
         console.log('Response status:', response.status)
 
         if (!response.ok) {
           const errorText = await response.text()
+
           console.error('API error response:', errorText)
           throw new Error(`Failed to fetch session: ${response.status} ${response.statusText}`)
         }
 
         const data = await response.json()
+        // eslint-disable-next-line no-console
         console.log('Session data received:', data)
 
         // Ensure the session has a title
         if (!data.title && data.messages && data.messages.length > 0) {
           // Generate a title from the first user message
           const firstUserMessage = data.messages.find(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (m: any) => m.role === 'user' || m.type === 'user',
           )
           if (firstUserMessage) {
@@ -256,11 +263,13 @@ export const FullSessionView: React.FC = () => {
         })
       }, 100)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, searchQuery, messageIndex, loading])
 
   // Generate session summary
   const sessionSummary = session ? SessionAnalyzer.analyzeSession(session) : null
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleDeleteSession = async () => {
     if (!session || !confirm(t('confirmDeleteSession'))) {
       return
@@ -512,6 +521,7 @@ export const FullSessionView: React.FC = () => {
                     content.includes('how to')
                   )
                 })
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 .map((message: any) => {
                   const originalIndex = session.messages.indexOf(message)
                   return (
@@ -636,6 +646,7 @@ export const FullSessionView: React.FC = () => {
               >
                 {t('showingAllMessages', { count: session.messages.length })}
               </div>
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {session.messages.map((message: any, index: number) => {
                 const content = message.content || ''
                 const hasMatch = searchTerms.some((term) =>

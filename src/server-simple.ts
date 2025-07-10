@@ -48,6 +48,7 @@ interface Session {
   title: string
   created_at: string
   updated_at: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   messages: any[]
 }
 
@@ -116,6 +117,7 @@ app.get('/api/search/full', async (req, res) => {
     }
 
     const projectsPath = path.join(CLAUDE_STORAGE_PATH, 'projects')
+    // eslint-disable-next-line no-console
     console.log('Full text search in:', projectsPath)
     const projects = await fs.readdir(projectsPath).catch((err) => {
       console.error('Error reading projects directory:', err)
@@ -249,7 +251,7 @@ app.get('/api/search/full', async (req, res) => {
               }
 
               messageIndex++
-            } catch (parseError) {
+            } catch {
               // Skip invalid JSON lines
             }
           }
@@ -269,6 +271,7 @@ app.get('/api/search/full', async (req, res) => {
       }
     }
 
+    // eslint-disable-next-line no-console
     console.log(
       `Full text search: searched ${totalFilesSearched} files, found ${results.length} results for query: "${query}"`,
     )
@@ -289,11 +292,13 @@ app.get('/api/search', async (req, res) => {
 
     // Get all project directories
     const projectsPath = path.join(CLAUDE_STORAGE_PATH, 'projects')
+    // eslint-disable-next-line no-console
     console.log('Searching in:', projectsPath)
     const projects = await fs.readdir(projectsPath).catch((err) => {
       console.error('Error reading projects directory:', err)
       return []
     })
+    // eslint-disable-next-line no-console
     console.log('Found projects:', projects.length)
 
     const results: SearchResult[] = []
@@ -402,7 +407,9 @@ app.get('/api/search', async (req, res) => {
               messageIndex++
             } catch (parseError) {
               // Skip invalid JSON lines
-              console.error('Error parsing line:', parseError.message)
+
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              console.error('Error parsing line:', (parseError as any).message)
             }
           }
 
@@ -411,6 +418,7 @@ app.get('/api/search', async (req, res) => {
               sessionId: file.replace('.jsonl', ''),
               sessionDate,
               messageCount: highlights.length,
+              project: project.replace(/-/g, '/'),
               highlights: highlights.slice(0, 3), // Limit to first 3 highlights
             })
           }
@@ -420,6 +428,7 @@ app.get('/api/search', async (req, res) => {
       }
     }
 
+    // eslint-disable-next-line no-console
     console.log(
       `Searched ${totalFilesSearched} files, found ${results.length} results for query: "${query}"`,
     )
@@ -475,6 +484,7 @@ app.get('/api/session/:id', async (req, res) => {
                     break
                   default:
                     // For unknown types, we'll try to determine later
+                    // eslint-disable-next-line no-console
                     console.log(`Unknown message type: ${parsed.type}`)
                 }
               }
@@ -489,6 +499,7 @@ app.get('/api/session/:id', async (req, res) => {
                   content = parsed.message.content
                 } else if (Array.isArray(parsed.message.content)) {
                   content = parsed.message.content
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     .map((c: any) => {
                       if (typeof c === 'string') return c
                       if (c.text) return c.text
@@ -511,6 +522,7 @@ app.get('/api/session/:id', async (req, res) => {
                   content = parsed.content
                 } else if (Array.isArray(parsed.content)) {
                   content = parsed.content
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     .map((c: any) => {
                       if (typeof c === 'string') return c
                       if (c.text) return c.text
@@ -553,6 +565,7 @@ app.get('/api/session/:id', async (req, res) => {
 
                 if (!content) {
                   // Log unhandled format
+                  // eslint-disable-next-line no-console
                   console.log(
                     `Line ${lineIndex}: Unhandled message format:`,
                     JSON.stringify(parsed).substring(0, 200),
@@ -562,6 +575,7 @@ app.get('/api/session/:id', async (req, res) => {
 
               // If we still don't have a role, skip this message
               if (!role) {
+                // eslint-disable-next-line no-console
                 console.log(
                   `Line ${lineIndex}: Could not determine role for message:`,
                   JSON.stringify(parsed).substring(0, 200),
@@ -591,16 +605,13 @@ app.get('/api/session/:id', async (req, res) => {
         const session = {
           id: sessionId,
           project: project.replace(/-/g, '/'),
-          created_at: messages[0]?.timestamp || messages[0]?.ts || fileBirthtime,
-          updated_at:
-            messages[messages.length - 1]?.timestamp ||
-            messages[messages.length - 1]?.ts ||
-            fileMtime,
+          created_at: messages[0]?.timestamp || fileBirthtime,
+          updated_at: messages[messages.length - 1]?.timestamp || fileMtime,
           messages,
         }
 
         return res.json(session)
-      } catch (error) {
+      } catch {
         // Continue searching in other projects
       }
     }
@@ -717,7 +728,8 @@ app.get('/api/sessions', async (req, res) => {
           content =
             typeof msg.message.content === 'string'
               ? msg.message.content
-              : msg.message.content.map((c: any) => c.text || '').join(' ')
+              : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                msg.message.content.map((c: any) => c.text || '').join(' ')
         }
 
         content = content.replace(/\n+/g, ' ').replace(/\s+/g, ' ').trim()
@@ -818,6 +830,7 @@ app.post('/api/open-claude', async (req, res) => {
 // Export sessions
 app.post('/api/export', async (req, res) => {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { sessionIds, projectFilter, format = 'json' } = req.body
     const sessions = []
 
@@ -849,7 +862,7 @@ app.post('/api/export', async (req, res) => {
 
           // Parse messages from JSONL
           const messages = lines
-            .map((line, lineIndex) => {
+            .map((line) => {
               try {
                 const parsed = JSON.parse(line)
                 let content = ''
@@ -882,6 +895,7 @@ app.post('/api/export', async (req, res) => {
                     content = parsed.message.content
                   } else if (Array.isArray(parsed.message.content)) {
                     content = parsed.message.content
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       .map((c: any) => {
                         if (typeof c === 'string') return c
                         if (c.text) return c.text
@@ -998,13 +1012,16 @@ app.get('*', serveIndex)
 // Start server
 const port = process.env.PORT || 3212
 const server = app.listen(port, () => {
+  // eslint-disable-next-line no-console
   console.log(`API server running on http://localhost:${port}`)
 })
 
 // Graceful shutdown handlers
 const shutdown = () => {
+  // eslint-disable-next-line no-console
   console.log('Shutting down server...')
   server.close(() => {
+    // eslint-disable-next-line no-console
     console.log('Server closed')
     process.exit(0)
   })

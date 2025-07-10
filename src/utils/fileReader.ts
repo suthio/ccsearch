@@ -55,7 +55,7 @@ export class SessionFileReader {
           // For remaining parts after github.com/org/, replace '-' with '/' only for known directory patterns
           // This preserves hyphens in repository and directory names
           const domainMatch = workingPath.match(
-            /(github\.com|gitlab\.com|bitbucket\.org)\/([^\/]+)\/(.*)/,
+            /(github\.com|gitlab\.com|bitbucket\.org)\/([^/]+)\/(.*)/,
           )
           if (domainMatch) {
             const [, domain, org, rest] = domainMatch
@@ -132,7 +132,7 @@ export class SessionFileReader {
                 .replace(/-bitbucket-org-/, '/bitbucket.org/')
 
               const domainMatch = workingPath.match(
-                /(github\.com|gitlab\.com|bitbucket\.org)\/([^\/]+)\/(.*)/,
+                /(github\.com|gitlab\.com|bitbucket\.org)\/([^/]+)\/(.*)/,
               )
               if (domainMatch) {
                 const [, domain, org, rest] = domainMatch
@@ -199,6 +199,7 @@ export class SessionFileReader {
             } else if (Array.isArray(msg.content)) {
               // Handle both text content and tool results
               const contentParts = msg.content
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 .map((c: any) => {
                   if (c.text) {
                     return c.text

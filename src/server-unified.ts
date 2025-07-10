@@ -20,6 +20,7 @@ interface Session {
   title: string
   created_at: string
   updated_at: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   messages: any[]
 }
 
@@ -102,6 +103,7 @@ app.get('/api/search/full', async (req, res) => {
     }
 
     const projectsPath = path.join(CLAUDE_STORAGE_PATH, 'projects')
+    // eslint-disable-next-line no-console
     console.log('Full text search in:', projectsPath)
     const projects = await fs.readdir(projectsPath).catch((err) => {
       console.error('Error reading projects directory:', err)
@@ -196,7 +198,7 @@ app.get('/api/search/full', async (req, res) => {
               }
 
               messageIndex++
-            } catch (parseError) {
+            } catch {
               // Skip invalid JSON lines
             }
           }
@@ -216,6 +218,7 @@ app.get('/api/search/full', async (req, res) => {
       }
     }
 
+    // eslint-disable-next-line no-console
     console.log(
       `Full text search: searched ${totalFilesSearched} files, found ${results.length} results for query: "${query}"`,
     )
@@ -236,11 +239,13 @@ app.get('/api/search', async (req, res) => {
 
     // Get all project directories
     const projectsPath = path.join(CLAUDE_STORAGE_PATH, 'projects')
+    // eslint-disable-next-line no-console
     console.log('Searching in:', projectsPath)
     const projects = await fs.readdir(projectsPath).catch((err) => {
       console.error('Error reading projects directory:', err)
       return []
     })
+    // eslint-disable-next-line no-console
     console.log('Found projects:', projects.length)
 
     const results: SearchResult[] = []
@@ -311,7 +316,8 @@ app.get('/api/search', async (req, res) => {
               messageIndex++
             } catch (parseError) {
               // Skip invalid JSON lines
-              console.error('Error parsing line:', parseError.message)
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              console.error('Error parsing line:', (parseError as any).message)
             }
           }
 
@@ -320,6 +326,7 @@ app.get('/api/search', async (req, res) => {
               sessionId: file.replace('.jsonl', ''),
               sessionDate,
               messageCount: highlights.length,
+              project: project.replace(/-/g, '/'),
               highlights: highlights.slice(0, 3), // Limit to first 3 highlights
             })
           }
@@ -329,6 +336,7 @@ app.get('/api/search', async (req, res) => {
       }
     }
 
+    // eslint-disable-next-line no-console
     console.log(
       `Searched ${totalFilesSearched} files, found ${results.length} results for query: "${query}"`,
     )
@@ -381,7 +389,7 @@ app.get('/api/session/:id', async (req, res) => {
         }
 
         return res.json(session)
-      } catch (error) {
+      } catch {
         // Continue searching in other projects
       }
     }
@@ -497,7 +505,8 @@ app.get('/api/sessions', async (req, res) => {
           content =
             typeof msg.message.content === 'string'
               ? msg.message.content
-              : msg.message.content.map((c: any) => c.text || '').join(' ')
+              : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                msg.message.content.map((c: any) => c.text || '').join(' ')
         }
 
         content = content.replace(/\n+/g, ' ').replace(/\s+/g, ' ').trim()
@@ -661,12 +670,17 @@ if (!isDevelopment) {
 // Start server
 const port = process.env.PORT || 3210
 app.listen(port, () => {
+  // eslint-disable-next-line no-console
   console.log(`Server running on http://localhost:${port}`)
   if (isDevelopment) {
+    // eslint-disable-next-line no-console
     console.log('Running in development mode.')
+    // eslint-disable-next-line no-console
     console.log('API endpoints available at http://localhost:3210/api/*')
+    // eslint-disable-next-line no-console
     console.log('Please run "npm run dev:client" in another terminal for the web UI.')
   } else {
+    // eslint-disable-next-line no-console
     console.log('Running in production mode. Serving static files from dist/')
   }
 })

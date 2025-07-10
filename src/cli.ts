@@ -30,12 +30,14 @@ program
   .option('-i, --interactive', 'Interactive mode - select sessions to export')
   .action(async (options: ExportOptions) => {
     try {
+      // eslint-disable-next-line no-console
       console.log('Loading sessions...')
       let sessions = await fileReader.getAllSessions()
 
       // Filter by project if specified
       if (options.project) {
         sessions = sessions.filter((s) => s.project?.includes(options.project!))
+        // eslint-disable-next-line no-console
         console.log(`Filtered to ${sessions.length} sessions matching project: ${options.project}`)
       }
 
@@ -49,10 +51,12 @@ program
         // Take last n sessions
         const n = parseInt(options.last)
         sessions = sessions.slice(0, n)
+        // eslint-disable-next-line no-console
         console.log(`Selected last ${sessions.length} sessions`)
       }
 
       if (sessions.length === 0) {
+        // eslint-disable-next-line no-console
         console.log('No sessions to export')
         return
       }
@@ -89,13 +93,16 @@ program
       // Write to file
       const outputPath = path.resolve(options.output!)
       fs.writeFileSync(outputPath, JSON.stringify(exportData, null, 2))
+      // eslint-disable-next-line no-console
       console.log(`\n✅ Exported ${sessions.length} sessions to: ${outputPath}`)
 
       // Show summary
+      // eslint-disable-next-line no-console
       console.log('\nExported sessions:')
       sessions.forEach((session, idx) => {
         const title = session.title || 'Untitled Session'
         const project = session.project ? ` (${getProjectDisplayName(session.project)})` : ''
+        // eslint-disable-next-line no-console
         console.log(`  ${idx + 1}. ${title}${project}`)
       })
     } catch (error) {
@@ -110,6 +117,7 @@ program
   .option('-p, --project <project>', 'Filter by project path')
   .action(async (query: string, options: { project?: string }) => {
     try {
+      // eslint-disable-next-line no-console
       console.log(`Searching for: "${query}"...`)
       const sessions = await fileReader.getAllSessions()
 
@@ -128,12 +136,15 @@ program
         results = results.filter((s) => s.project?.includes(options.project!))
       }
 
+      // eslint-disable-next-line no-console
       console.log(`\nFound ${results.length} sessions:`)
       results.forEach((session, idx) => {
         const title = session.title || 'Untitled Session'
         const project = session.project ? ` (${getProjectDisplayName(session.project)})` : ''
         const date = new Date(session.updated_at).toLocaleDateString()
+        // eslint-disable-next-line no-console
         console.log(`\n${idx + 1}. ${title}${project} - ${date}`)
+        // eslint-disable-next-line no-console
         console.log(`   ID: ${session.id}`)
       })
     } catch (error) {
@@ -142,17 +153,20 @@ program
     }
   })
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function selectSessionsInteractively(sessions: any[]): Promise<any[]> {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
   })
 
+  // eslint-disable-next-line no-console
   console.log('\nAvailable sessions:')
   sessions.forEach((session, idx) => {
     const title = session.title || 'Untitled Session'
     const project = session.project ? ` (${getProjectDisplayName(session.project)})` : ''
     const date = new Date(session.updated_at).toLocaleDateString()
+    // eslint-disable-next-line no-console
     console.log(`  ${idx + 1}. ${title}${project} - ${date}`)
   })
 
@@ -171,6 +185,7 @@ async function selectSessionsInteractively(sessions: any[]): Promise<any[]> {
         .filter((i) => i >= 0 && i < sessions.length)
 
       const selected = indices.map((i) => sessions[i])
+      // eslint-disable-next-line no-console
       console.log(`\nSelected ${selected.length} sessions`)
       resolve(selected)
     })
@@ -189,54 +204,64 @@ function getProjectDisplayName(project: string): string {
 if (process.argv.length === 2 || (process.argv.length === 4 && process.argv[2] === '--port')) {
   // Try to start server using different methods
   const port = program.opts().port || 3000
-  
+
   // First, try the runner script (for npm package)
   try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { spawn } = require('child_process')
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const path = require('path')
     const runnerPath = path.join(__dirname, 'server-runner.js')
-    
+
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     if (require('fs').existsSync(runnerPath)) {
       const child = spawn('node', [runnerPath, port], {
-        stdio: 'inherit'
+        stdio: 'inherit',
       })
-      
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       child.on('error', (err: any) => {
         console.error('Failed to start server:', err)
         process.exit(1)
       })
-      
+
       child.on('exit', (code: number) => {
         process.exit(code || 0)
       })
     }
-  } catch (e) {
+  } catch {
     // Continue to try dynamic import
   }
-  
+
   // Fall back to dynamic import
-  // @ts-ignore - Server module may not be available in all builds
   import('./cli-server-wrapper')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .then((module: any) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       module.runServer(parseInt(port)).catch((error: any) => {
         console.error('Failed to start server:', error)
+
         console.error('Server functionality may not be available in this build.')
         process.exit(1)
       })
     })
-    .catch((error: any) => {
+    .catch(() => {
       // Try original cli-server as last resort
-      // @ts-ignore
       import('./cli-server')
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .then((module2: any) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           module2.runServer(parseInt(port)).catch((error2: any) => {
             console.error('Failed to start server:', error2)
+
             console.error('Server functionality may not be available in this build.')
             process.exit(1)
           })
         })
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .catch((error2: any) => {
           console.error('Server module not available:', error2)
+
           console.error('Please use the export or search commands.')
           process.exit(1)
         })

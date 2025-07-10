@@ -94,11 +94,17 @@ export class Server {
               content = msg.text
             } else if (msg.summary) {
               content = msg.summary
-            } else if (msg.message && msg.message.content) {
-              content =
-                typeof msg.message.content === 'string'
-                  ? msg.message.content
-                  : msg.message.content.map((c: any) => c.text || '').join(' ')
+            } else if (msg.message) {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const message = msg.message as any
+              if (typeof message === 'object' && message !== null && 'content' in message) {
+                const msgContent = message.content
+                content =
+                  typeof msgContent === 'string'
+                    ? msgContent
+                    : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      msgContent.map((c: any) => c.text || '').join(' ')
+              }
             }
 
             content = content.replace(/\n+/g, ' ').replace(/\s+/g, ' ').trim()
@@ -178,6 +184,7 @@ export class Server {
         sessions[sessionIndex].tags = tags
 
         // Save back to file
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const fs = require('fs').promises
         const sessionFilePath = sessions[sessionIndex].filepath
         await fs.writeFile(sessionFilePath, JSON.stringify(sessions[sessionIndex], null, 2))
@@ -210,6 +217,7 @@ export class Server {
         sessions[sessionIndex].title = title
 
         // Save back to file
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const fs = require('fs').promises
         const sessionFilePath = sessions[sessionIndex].filepath
         await fs.writeFile(sessionFilePath, JSON.stringify(sessions[sessionIndex], null, 2))
@@ -237,6 +245,7 @@ export class Server {
         const sessionFilePath = sessions[sessionIndex].filepath
 
         // Delete the file
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const fs = require('fs').promises
         await fs.unlink(sessionFilePath)
 
@@ -360,6 +369,7 @@ export class Server {
 
         // Validate session format
         const warnings: string[] = []
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const validSessions = data.sessions.filter((session: any, index: number) => {
           if (!session.id || !session.messages || !Array.isArray(session.messages)) {
             warnings.push(`Session at index ${index} is missing required fields (id or messages)`)
@@ -424,11 +434,14 @@ export class Server {
         this.server = this.app
           .listen(port)
           .on('listening', () => {
+            // eslint-disable-next-line no-console
             console.log(`Server started on http://localhost:${port}`)
             resolve(port)
           })
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           .on('error', (err: any) => {
             if (err.code === 'EADDRINUSE') {
+              // eslint-disable-next-line no-console
               console.log(`Port ${port} is busy, trying ${port + 1}...`)
               tryPort(port + 1)
                 .then(resolve)
@@ -446,10 +459,12 @@ export class Server {
   stop(): void {
     if (this.server) {
       this.server.close()
+      // eslint-disable-next-line no-console
       console.log('Server stopped')
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private convertToCSV(sessions: any[]): string {
     const headers = [
       'Session ID',
@@ -478,6 +493,7 @@ export class Server {
           if (typeof msg.message.content === 'string') {
             firstMessageContent = msg.message.content
           } else if (Array.isArray(msg.message.content)) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             firstMessageContent = msg.message.content.map((c: any) => c.text || '').join(' ')
           }
         }
@@ -499,6 +515,7 @@ export class Server {
     return rows.join('\n')
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private convertToMarkdown(sessions: any[]): string {
     let markdown = '# Claude Sessions Export\n\n'
     markdown += `Export Date: ${new Date().toISOString()}\n\n`
@@ -516,6 +533,7 @@ export class Server {
       }
       markdown += '\n### Messages\n\n'
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       session.messages.forEach((msg: any, index: number) => {
         // Extract content from various message formats
         let content = ''
@@ -539,6 +557,7 @@ export class Server {
           if (typeof msg.message.content === 'string') {
             content = msg.message.content
           } else if (Array.isArray(msg.message.content)) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             content = msg.message.content.map((c: any) => c.text || '').join(' ')
           }
         }
