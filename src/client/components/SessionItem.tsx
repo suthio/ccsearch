@@ -484,7 +484,7 @@ export const SessionItem: React.FC<SessionItemProps> = ({
                   <div className="match-role">{match.message.role}</div>
                   <div className="match-content">
                     {highlightText(
-                      match.highlights[0] || match.message.content.substring(0, 200),
+                      match.highlights[0] || extractMessageContent(match.message).substring(0, 200),
                       searchTerms,
                     )}
                   </div>
@@ -551,9 +551,12 @@ export const SessionItem: React.FC<SessionItemProps> = ({
                     whiteSpace: 'pre-wrap',
                   }}
                 >
-                  {message.content.length > 800
-                    ? message.content.substring(0, 800) + '...'
-                    : message.content}
+                  {(() => {
+                    const content = extractMessageContent(message);
+                    return content.length > 800
+                      ? content.substring(0, 800) + '...'
+                      : content;
+                  })()}
                 </div>
               </div>
             ))}
