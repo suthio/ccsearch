@@ -1,0 +1,68 @@
+name: Manual NPM Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (leave empty to use package.json version)'
+        required: false
+        type: string
+      tag:
+        description: 'NPM tag (latest, beta, alpha, etc.)'
+        required: false
+        default: 'latest'
+        type: string
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.0.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run tests
+        run: |
+          pnpm lint
+          pnpm format:check
+          pnpm typecheck
+
+      - name: Build for npm
+        run: pnpm build:npm
+
+      - name: Update version if specified
+        if: ${{ github.event.inputs.version != '' }}
+        run: |
+          npm version ${{ github.event.inputs.version }} --no-git-tag-version
+          echo "Updated package.json version to ${{ github.event.inputs.version }}"
+
+      - name: Publish to npm
+        run: |
+          if [ "${{ github.event.inputs.tag }}" = "latest" ]; then
+            npm publish --access public
+          else
+            npm publish --access public --tag ${{ github.event.inputs.tag }}
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Show published version
+        run: |
+          PACKAGE_NAME=$(node -p "require('./package.json').name")
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          echo "✅ Published ${PACKAGE_NAME}@${PACKAGE_VERSION} to npm with tag '${{ github.event.inputs.tag }}'"
+          echo "📦 View on npm: https://www.npmjs.com/package/${PACKAGE_NAME}"
