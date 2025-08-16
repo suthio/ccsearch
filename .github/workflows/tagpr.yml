@@ -1,0 +1,95 @@
+name: tagpr
+
+on:
+  push:
+    branches: ['main']
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  packages: write
+  actions: write
+
+jobs:
+  tagpr:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tagpr.outputs.tag }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.0.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run tagpr
+        id: tagpr
+        uses: Songmu/tagpr@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # NPMへの自動パブリッシュ（タグが作成された場合のみ実行）
+  npm-publish:
+    needs: tagpr
+    if: needs.tagpr.outputs.tag != ''
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.tagpr.outputs.tag }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.0.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build for npm
+        run: pnpm build:npm
+
+      - name: Publish to npm
+        run: |
+          TAG_NAME="${{ needs.tagpr.outputs.tag }}"
+
+          # Check if this is a prerelease
+          if [[ "$TAG_NAME" == *"-beta"* ]]; then
+            npm publish --provenance --tag beta
+          elif [[ "$TAG_NAME" == *"-alpha"* ]]; then
+            npm publish --provenance --tag alpha
+          else
+            npm publish --provenance
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Post-release notification
+        if: success()
+        run: |
+          echo "✅ Release ${{ needs.tagpr.outputs.tag }} published successfully!"
+          echo "📦 NPM: https://www.npmjs.com/package/ccsearch"
+          echo "🎉 GitHub Release: https://github.com/${{ github.repository }}/releases/tag/${{ needs.tagpr.outputs.tag }}"
