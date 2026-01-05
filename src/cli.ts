@@ -153,6 +153,42 @@ program
     }
   })
 
+program
+  .command('tui')
+  .description('Launch Terminal User Interface')
+  .action(() => {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const { spawn } = require('child_process')
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const path = require('path')
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const fs = require('fs')
+
+      // Look for tui-runner.mjs in dist directory (for built version) or src (for dev)
+      const distRunner = path.join(__dirname, '..', 'dist', 'tui-runner.mjs')
+      const srcRunner = path.join(__dirname, 'tui-runner.mjs')
+      const tuiRunner = fs.existsSync(distRunner) ? distRunner : srcRunner
+
+      const child = spawn('node', [tuiRunner], {
+        stdio: 'inherit',
+        cwd: process.cwd(),
+      })
+
+      child.on('error', (err: Error) => {
+        console.error('Failed to start TUI:', err)
+        process.exit(1)
+      })
+
+      child.on('exit', (code: number) => {
+        process.exit(code || 0)
+      })
+    } catch (error) {
+      console.error('Error starting TUI:', error)
+      process.exit(1)
+    }
+  })
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function selectSessionsInteractively(sessions: any[]): Promise<any[]> {
   const rl = readline.createInterface({
