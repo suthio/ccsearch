@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { Command } from 'commander'
+import { spawn } from 'child_process'
 import { SessionFileReader } from './utils/fileReader'
 import * as fs from 'fs'
 import * as path from 'path'
@@ -158,13 +159,6 @@ program
   .description('Launch Terminal User Interface')
   .action(() => {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const { spawn } = require('child_process')
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const path = require('path')
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const fs = require('fs')
-
       // Look for tui-runner.mjs in dist directory (for built version) or src (for dev)
       const distRunner = path.join(__dirname, '..', 'dist', 'tui-runner.mjs')
       const srcRunner = path.join(__dirname, 'tui-runner.mjs')
