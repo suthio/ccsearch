@@ -2,18 +2,16 @@ import { useEffect, useCallback } from 'react'
 import { useTUI } from '../contexts/TUIContext'
 
 export const useSearch = (debounceMs: number = 300) => {
-  const { sessions, searchQuery, setFilteredSessions, setSelectedIndex } = useTUI()
+  const { sessions, searchQuery, selectedIndex, setFilteredSessions, setSelectedIndex } = useTUI()
 
   const performSearch = useCallback(() => {
     if (!searchQuery.trim()) {
       setFilteredSessions(sessions)
       // Keep current index when clearing search, or set to last if at top
-      setSelectedIndex((current) => {
-        if (current === 0 && sessions.length > 0) {
-          return sessions.length - 1
-        }
-        return Math.min(current, sessions.length - 1)
-      })
+      const newIndex = selectedIndex === 0 && sessions.length > 0
+        ? sessions.length - 1
+        : Math.min(selectedIndex, sessions.length - 1)
+      setSelectedIndex(newIndex)
       return
     }
 
@@ -33,7 +31,7 @@ export const useSearch = (debounceMs: number = 300) => {
 
     setFilteredSessions(filtered)
     setSelectedIndex(0)
-  }, [sessions, searchQuery, setFilteredSessions, setSelectedIndex])
+  }, [sessions, searchQuery, selectedIndex, setFilteredSessions, setSelectedIndex])
 
   // Debounced search
   useEffect(() => {
