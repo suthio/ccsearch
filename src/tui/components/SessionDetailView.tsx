@@ -94,7 +94,7 @@ export const SessionDetailView: React.FC = () => {
                 </Text>
               </Box>
               <Box paddingLeft={2}>
-                <Text color={isUser ? 'white' : 'white'}>
+                <Text color="white">
                   {truncateContent(message.content, 500)}
                 </Text>
               </Box>
