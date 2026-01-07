@@ -13,9 +13,15 @@ A powerful search and management tool for Claude AI conversation sessions. Searc
 - Contextual highlights with surrounding text
 - Tag-based filtering for organized session management
 
-### 💻 Dual Interface
+### 💻 Triple Interface
 
 - **CLI mode**: Direct command-line search and export
+- **TUI (Terminal User Interface)**: Interactive terminal-based interface
+  - Browse and search sessions directly in your terminal
+  - Keyboard navigation (j/k, arrow keys)
+  - Real-time search with instant filtering
+  - Session detail view with full conversation history
+  - No browser required - works entirely in terminal
 - **Web UI**: Browser-based intuitive interface
   - Real-time search
   - Session list view
@@ -76,14 +82,19 @@ npx ccsearch@latest export -l 10 -o sessions.json
 
 # Search sessions
 npx ccsearch@latest search "your search query"
+
+# Launch Terminal User Interface
+npx ccsearch@latest tui
 ```
 
 ## Quick Start
 
 ```bash
-# Start the web interface immediately
-npx ccsearch@latest
+# Option 1: Launch Terminal User Interface (no browser needed)
+npx ccsearch@latest tui
 
+# Option 2: Start the web interface
+npx ccsearch@latest
 # Open your browser to http://localhost:3210
 ```
 
@@ -109,6 +120,9 @@ ccsearch export -i
 
 # Search from command line
 ccsearch search "API implementation"
+
+# Launch Terminal User Interface
+ccsearch tui
 ```
 
 ### CLI Options
@@ -123,6 +137,44 @@ ccsearch search "API implementation"
 - `-l, --last <number>`: Export last N sessions
 - `-i, --interactive`: Interactive session selection mode
 - `-o, --output <file>`: Output file path (default: ccsearch-export.json)
+
+### Terminal User Interface (TUI)
+
+Launch an interactive terminal interface for browsing and searching sessions:
+
+```bash
+ccsearch tui
+```
+
+**Keyboard Shortcuts:**
+
+*In List View:*
+- `j` / `↓`: Navigate down
+- `k` / `↑`: Navigate up
+- `gg`: Jump to top
+- `G`: Jump to bottom
+- `Ctrl+D`: Page down (10 items)
+- `Ctrl+U`: Page up (10 items)
+- `Enter`: Open selected session detail view
+- `/`: Start search
+- `Esc`: Cancel search
+- `q`: Quit TUI
+
+*In Detail View:*
+- `j` / `↓`: Scroll down
+- `k` / `↑`: Scroll up
+- `g`: Jump to top
+- `G`: Jump to bottom
+- `Ctrl+D`: Scroll down 5 messages
+- `Ctrl+U`: Scroll up 5 messages
+- `Esc` / `q`: Go back to list view
+
+**Features:**
+- Browse all Claude sessions in your terminal
+- Real-time search filtering
+- View full conversation details
+- Navigate between list and detail views
+- No browser required - works entirely in terminal
 
 ### Web Interface
 
@@ -211,6 +263,15 @@ npm start
 ```
 
 ### Recent Updates
+
+#### Terminal User Interface (TUI) (2025-01-XX)
+
+- **New Terminal Interface**: Browse and search Claude sessions directly in your terminal
+- **Keyboard Navigation**: Full vim-style navigation (j/k, gg/G, Ctrl+D/U)
+- **Real-time Search**: Instant filtering as you type
+- **Session Detail View**: View full conversation history with scrollable message view
+- **No Browser Required**: Complete terminal-based experience
+- Launch with `ccsearch tui` or `npx ccsearch@latest tui`
 
 #### Session Analysis and Enhanced UI (2025-07-03)
 
