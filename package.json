@@ -1,6 +1,6 @@
 {
   "name": "ccsearch",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A powerful search and management tool for Claude AI conversation sessions",
   "main": "dist/index-npm.js",
   "bin": {
