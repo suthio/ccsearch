@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { Command } from 'commander'
+import { spawn } from 'child_process'
 import { SessionFileReader } from './utils/fileReader'
 import * as fs from 'fs'
 import * as path from 'path'
@@ -149,6 +150,35 @@ program
       })
     } catch (error) {
       console.error('Error searching sessions:', error)
+      process.exit(1)
+    }
+  })
+
+program
+  .command('tui')
+  .description('Launch Terminal User Interface')
+  .action(() => {
+    try {
+      // Look for tui-runner.mjs in dist directory (for built version) or src (for dev)
+      const distRunner = path.join(__dirname, '..', 'dist', 'tui-runner.mjs')
+      const srcRunner = path.join(__dirname, 'tui-runner.mjs')
+      const tuiRunner = fs.existsSync(distRunner) ? distRunner : srcRunner
+
+      const child = spawn('node', [tuiRunner], {
+        stdio: 'inherit',
+        cwd: process.cwd(),
+      })
+
+      child.on('error', (err: Error) => {
+        console.error('Failed to start TUI:', err)
+        process.exit(1)
+      })
+
+      child.on('exit', (code: number) => {
+        process.exit(code || 0)
+      })
+    } catch (error) {
+      console.error('Error starting TUI:', error)
       process.exit(1)
     }
   })
