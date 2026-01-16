@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.0.9](https://github.com/suthio/ccsearch/compare/v0.0.8...v0.0.9) - 2026-01-13
+- Adding TUI support using INK by @BurhanCantCode in https://github.com/suthio/ccsearch/pull/10
+
 ## [v0.0.8](https://github.com/suthio/ccsearch/commits/v0.0.8) - 2025-08-16
 - Fix project list session count display bug by @suthio in https://github.com/suthio/ccsearch/pull/1
 - fix: resolve lint, typecheck and build errors with CI pipeline setup by @mkusaka in https://github.com/suthio/ccsearch/pull/3
